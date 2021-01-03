@@ -142,7 +142,7 @@ jobs:
   publish:
     needs: build
     runs-on: windows-latest
-    if: github.repository == 'rschurade/Ingnomia' && github.ref == 'ref/head/release' && ( secrets.BUGSPLAT_USER != 0 || secrets.STEAM_USER != 0 )
+    if: github.repository == 'rschurade/Ingnomia' && github.ref == 'ref/head/release'
     steps:
     - uses: actions/checkout@v2
     - name: Download Steam
@@ -175,11 +175,9 @@ jobs:
         path: install
 
     - name: Steam upload
-      if: ( secrets.STEAM_USER != 0 )
       run: |
         ../steamworks_sdk/tools/ContentBuilder/builder/steamcmd.exe +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login ${{secrets.STEAM_USER}} ${{secrets.STEAM_PASSWORD}} +run_app_build_http ${{ github.workspace }}/steam/app_build_709240_ci.vdf +quit
     - name: Bugsplat upload
-      if: ( secrets.BUGSPLAT_USER != 0 )
       run: |
         ../bugsplat_sdk/bin/SendPdbs.exe /u ${{secrets.BUGSPLAT_USER}} /p ${{secrets.BUGSPLAT_PASSWORD}} /b {{secrets.BUGSPLAT_DB}} /a Ingnomia /v ${{github.run_id}} /d ../install
        
