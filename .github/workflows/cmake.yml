@@ -181,8 +181,8 @@ jobs:
 
     - name: Steam upload
       run: |
-        steamworks_sdk/tools/ContentBuilder/builder/steamcmd.exe +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login ${{secrets.STEAM_USER}} ${{secrets.STEAM_PASSWORD}} +run_app_build_http ${{ github.workspace }}/steam/app_build_709240_ci.vdf +quit
+        steamworks_sdk/sdk/tools/ContentBuilder/builder/steamcmd.exe +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login ${{secrets.STEAM_USER}} ${{secrets.STEAM_PASSWORD}} +run_app_build_http ${{ github.workspace }}/steam/app_build_709240_ci.vdf +quit
     - name: Bugsplat upload
       run: |
-        bugsplat_sdk/bin/SendPdbs.exe /u ${{secrets.BUGSPLAT_USER}} /p ${{secrets.BUGSPLAT_PASSWORD}} /b {{secrets.BUGSPLAT_DB}} /a Ingnomia /v ${{github.run_id}} /d install
+        bugsplat_sdk/BugSplat/bin/SendPdbs.exe /u ${{secrets.BUGSPLAT_USER}} /p ${{secrets.BUGSPLAT_PASSWORD}} /b {{secrets.BUGSPLAT_DB}} /a Ingnomia /v ${{github.run_id}} /d install
        
