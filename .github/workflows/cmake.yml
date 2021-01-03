@@ -142,7 +142,7 @@ jobs:
   publish:
     needs: build
     runs-on: windows-latest
-    if: github.repository == 'rschurade/Ingnomia' && github.ref == 'ref/head/release'
+    if: github.repository == 'rschurade/Ingnomia' && github.ref == 'refs/heads/release'
     steps:
     - uses: actions/checkout@v2
     - name: Download Steam
