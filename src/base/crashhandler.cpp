@@ -2,11 +2,7 @@
 
 #include "../version.h"
 
-#if defined( PROJECT_VERSION) && defined( BUILD_ID )
-#define BUILD_VERSION PROJECT_VERSION "-" BUILD_ID
-#endif
-
-#if defined( HAVE_BUGSPLAT ) && defined( BUGSPLAT_DB ) && defined( BUILD_VERSION )
+#if defined( HAVE_BUGSPLAT ) && defined( BUGSPLAT_DB ) && defined( BUILD_ID )
 #define USE_BUGSPLAT 1
 #endif
 
@@ -18,7 +14,7 @@
 
 void setupCrashHandler()
 {
-	static MiniDmpSender* mpSender = new MiniDmpSender( WIDEN( BUGSPLAT_DB ), WIDEN( PROJECT_NAME ), WIDEN( BUILD_VERSION ), NULL, MDSF_USEGUARDMEMORY | MDSF_LOGFILE | MDSF_DETECTHANGS | MDSF_SUSPENDALLTHREADS | MDSF_PREVENTHIJACKING );
+	static MiniDmpSender* mpSender = new MiniDmpSender( WIDEN( BUGSPLAT_DB ), WIDEN( PROJECT_NAME ), WIDEN( BUILD_ID ), NULL, MDSF_USEGUARDMEMORY | MDSF_LOGFILE | MDSF_DETECTHANGS | MDSF_SUSPENDALLTHREADS | MDSF_PREVENTHIJACKING );
 	// The following calls add support for collecting crashes for abort(), vectored exceptions, out of memory,
 	// pure virtual function calls, and for invalid parameters for OS functions.
 	// These calls should be used for each module that links with a separate copy of the CRT.
