@@ -1,0 +1,22 @@
+"AppBuild"
+{
+	"AppID" "709240" // Your AppID
+	"Desc" "Continous Integration build" // internal description for this build
+	// "Preview" "1" // make this a preview build only, nothing is uploaded
+	"SetLive" "beta" // set this build live on a beta branch
+	"ContentRoot" "..\install\"
+	"BuildOutput" "..\steam_output\"
+	
+	"Depots"
+	{
+		"709241" // your DepotID
+		{
+			"FileMapping"
+			{
+				"LocalPath" "*" // all files from contentroot folder
+				"DepotPath" "." // mapped into the root of the depot
+				"recursive" "1" // include all subfolders
+			}
+		}
+	}
+}

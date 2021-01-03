@@ -139,3 +139,47 @@ jobs:
           install/
           !**./*.iobj
           !**./*.ipdb
+  publish:
+    needs: build
+    runs-on: windows-latest
+    if: {{ github.repository == 'rschurade/Ingnomia' && github.ref == 'ref/head/release' && ( secrets.BUGSPLAT_USER != 0 || secrets.STEAM_USER != 0 }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Steam
+      uses: carlosperate/download-file-action@v1.0.3
+      id: download-steam
+      with:
+        file-url: 'https://github.com/rschurade/IngnomiaBuildDeps/raw/master/steamworks_sdk_150.zip'
+
+    - name: Unpack Steam
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: ${{ steps.download-steam.outputs.file-path }}
+        pathTarget: steamworks_sdk
+
+    - name: Download BugSplat
+      uses: carlosperate/download-file-action@v1.0.3
+      id: download-bugsplat
+      with:
+        file-url: 'https://github.com/rschurade/IngnomiaBuildDeps/raw/master/BugSplatNative.zip'
+
+    - name: Unpack BugSplat
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: ${{ steps.download-bugsplat.outputs.file-path }}
+        pathTarget: bugsplat_sdk
+        
+    - uses: actions/download-artifact@v2
+      with:
+        name: windows-2019
+        path: install
+
+    - name: Steam upload
+      if: {{ secrets.STEAM_USER != 0 }}
+      run: |
+        ../steamworks_sdk/tools/ContentBuilder/builder/steamcmd.exe +@ShutdownOnFailedCommand 1 +@NoPromptForPassword 1 +login ${{secrets.STEAM_USER}} ${{secrets.STEAM_PASSWORD}} +run_app_build_http ${{ github.workspace }}/steam/app_build_709240_ci.vdf +quit
+    - name: Bugsplat upload
+      if: {{ secrets.BUGSPLAT_USER != 0 }}
+      run: |
+        ../bugsplat_sdk/bin/SendPdbs.exe /u ${{secrets.BUGSPLAT_USER}} /p ${{secrets.BUGSPLAT_PASSWORD}} /b {{secrets.BUGSPLAT_DB}} /a Ingnomia /v ${{github.run_id}}
+       
