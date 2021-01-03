@@ -173,6 +173,11 @@ jobs:
       with:
         name: windows-2019
         path: install
+        
+    - uses: datamonsters/replace-action
+      with:
+        files: 'steam/app_build_709240_ci.vdf'
+        replacements: '$DESC="${{github.ref}} ${{github.run_id}}'
 
     - name: Steam upload
       run: |
