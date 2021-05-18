@@ -53,6 +53,7 @@ private:
 	QMap<QString, sf::SoundBuffer> m_buffers;
 
 	int m_viewLevel;
+	Position m_viewDirection;
 
 	void rebalanceSound( ActiveEffect& effect );
 	void garbageCollection();
